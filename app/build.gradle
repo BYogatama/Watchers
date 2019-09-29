@@ -1,0 +1,116 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "com.lonedev.watchers"
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        File extrasFiles = new File("extra.properties")
+        if(extrasFiles.exists()){
+            def extrasFile = rootProject.file('extra.properties')
+            def extras = new Properties()
+            extras.load(new FileInputStream(extrasFile))
+            buildConfigField "String", "API_KEY", extras.getProperty('API_KEY')
+            buildConfigField "String", "BASE_URL", extras.getProperty('BASE_URL')
+            buildConfigField "String", "DB_NAME", extras.getProperty('DB_NAME')
+        }
+    }
+
+    dataBinding {
+        enabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation rootProject.ext.appCompat
+    implementation rootProject.coreKTX
+    implementation rootProject.fragmentKTX
+
+    implementation "androidx.preference:preference-ktx:1.1.0"
+    implementation "androidx.paging:paging-runtime-ktx:2.1.0"
+
+    implementation rootProject.ext.constraintLayout
+
+    implementation rootProject.ext.lifecycleExtension
+    implementation rootProject.ext.lifecycleViewModel
+    implementation rootProject.ext.lifecycleReactiveStreams
+    implementation rootProject.ext.lifecycleJavaCommon
+
+    implementation rootProject.ext.roomRuntime
+    implementation rootProject.ext.roomKTX
+    implementation rootProject.ext.roomRxJava2
+    kapt rootProject.ext.roomCompiler
+    testImplementation rootProject.ext.roomTesting
+
+    implementation rootProject.ext.materialDesign
+
+    implementation rootProject.ext.dagger
+    implementation rootProject.ext.daggerAndroid
+    implementation rootProject.ext.daggerAndroidSupport
+    kapt rootProject.ext.daggerCompiler
+    kapt rootProject.ext.daggerAndroidProcessor
+
+    kaptTest rootProject.ext.daggerCompiler
+    kaptTest rootProject.ext.daggerAndroidProcessor
+    kaptAndroidTest rootProject.ext.daggerCompiler
+    kaptAndroidTest rootProject.ext.daggerAndroidProcessor
+
+    implementation rootProject.ext.picasso
+
+    implementation rootProject.ext.rxJava2
+    implementation rootProject.ext.rxAndroid
+
+    implementation rootProject.ext.retrofit
+    implementation rootProject.ext.gsonConverter
+    implementation rootProject.ext.retrofitRxJava2
+
+    implementation rootProject.ext.firebaseDispatcher
+
+    implementation 'com.github.markomilos:paginate:0.5.1'
+    implementation("com.squareup.okhttp3:logging-interceptor:4.2.0")
+
+    testImplementation rootProject.ext.mockito
+    testImplementation rootProject.ext.mockitoInline
+    testImplementation rootProject.ext.mockK
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.hamcrest:hamcrest:2.1'
+    testImplementation 'com.jraska.livedata:testing-ktx:1.1.0'
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
+    testImplementation "org.robolectric:robolectric:3.5.1"
+    androidTestImplementation 'androidx.test:core:1.2.0'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-accessibility:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-web:3.2.0'
+    androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.2.0'
+    androidTestImplementation 'androidx.test:rules:1.3.0-alpha02'
+}
